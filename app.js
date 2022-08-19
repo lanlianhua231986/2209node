@@ -98,6 +98,67 @@ app.get("/users", async (req, res) => {
     res.json({
       code: 205,
       msg: "暂无用户信息",
+      users: null,
+    });
+  }
+});
+/*
+  restful风格的api
+  get    ----> 向服务器获取资源
+  post   ----> 向服务器添加资源
+  put    ----> 向服务器修改资源
+  delete ----> 删除资源
+  head
+  options
+*/
+// 删除用户  动态传参
+app.delete("/deleteuser/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await User.findByIdAndDelete(id);
+  console.log(1212, result);
+  if (result) {
+    res.json({
+      code: 200,
+      msg: "删除成功",
+    });
+  } else {
+    res.json({
+      code: 206,
+      msg: "删除失败",
+    });
+  }
+});
+// 显示修改页面
+app.get("/edit", (req, res) => {
+  res.render("edit");
+});
+// 根据id获取用户
+app.get("/user/:id", async (req, res) => {
+  const id = req.params.id;
+  // 根据id去数据库查询id对应的信息
+  const result = await User.findById(id);
+  console.log(232323, result);
+  if (result) {
+    res.json({
+      code: 200,
+      msg: "获取用户信息成功",
+      user: result,
+    });
+  }
+});
+// 修改用户信息
+app.put("/edituser/:id", async (req, res) => {
+  const id = req.params.id;
+  const result = await User.findByIdAndUpdate(id, req.body);
+  if (result) {
+    res.json({
+      code: 200,
+      msg: "修改用户成功",
+    });
+  } else {
+    res.json({
+      code: 207,
+      msg: "修改用户失败",
     });
   }
 });

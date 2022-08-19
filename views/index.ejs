@@ -17,20 +17,37 @@
           success: (res) => {
             let str = "";
             console.log(res);
-            res.users.forEach((item) => {
-              str += `
+            if (res.users) {
+              res.users.forEach((item) => {
+                str += `
                 <li>
                     <span>用户名: ${item.username}</span>
                     <span>密码:${item.password}</span>
                     <img src="${item.imgurl}" alt="" width=100 height=100 />
                     <div>
-                        <button>修改</button>    
-                        <button>删除</button>    
+                        <a href="/edit?id=${item._id}">修改</a>    
+                        <button onclick="del('${item._id}')">删除</button>    
                     </div>
                 </li>
                 `;
-            });
-            $("#ul").html(str);
+              });
+              $("#ul").html(str);
+            } else {
+              // 没有数据
+              $("#ul").html("<li>暂无数据</li>");
+            }
+          },
+        });
+      }
+
+      // 删除
+      function del(id) {
+        $.ajax({
+          url: `/deleteuser/${id}`,
+          type: "delete",
+          success: (res) => {
+            console.log(res);
+            loadUsers();
           },
         });
       }
