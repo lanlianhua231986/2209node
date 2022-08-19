@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <ul id="ul"></ul>
+    <script>
+      loadUsers();
+      function loadUsers() {
+        $.ajax({
+          url: "/users",
+          success: (res) => {
+            let str = "";
+            console.log(res);
+            res.users.forEach((item) => {
+              str += `
+                <li>
+                    <span>用户名: ${item.username}</span>
+                    <span>密码:${item.password}</span>
+                    <img src="${item.imgurl}" alt="" width=100 height=100 />
+                    <div>
+                        <button>修改</button>    
+                        <button>删除</button>    
+                    </div>
+                </li>
+                `;
+            });
+            $("#ul").html(str);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
